@@ -5,6 +5,7 @@ import com.google.gson.stream.JsonReader;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -12,25 +13,12 @@ import java.util.HashMap;
 import entity.Ticket;
 
 public class Main {
-    private static int getTimeDifference(String time1, String time2) {
-        int hour1 = Integer.parseInt(time1.split(":")[0]);
-        int min1 = Integer.parseInt(time1.split(":")[1]);
-        int hour2 = Integer.parseInt(time2.split(":")[0]);
-        int min2 = Integer.parseInt(time2.split(":")[1]);
-
-        int totalMin1 = hour1 * 60 + min1;
-        int totalMin2 = hour2 * 60 + min2;
-
-        return totalMin2 - totalMin1;
-    }
-
-
     public static void main(String[] args) {
         Gson gson = new Gson();
-        try (JsonReader reader = new JsonReader(new FileReader(args[0]))) {
+        try (JsonReader reader = new JsonReader(new FileReader("C:\\Users\\LEXUS_KREKER\\Desktop\\json-parser\\parser\\tickets.json"))) {
             reader.beginObject();
             ArrayList<Integer> prices = new ArrayList<>();
-            HashMap<String, String> carrierMinFlightTime = new HashMap<>();
+            HashMap<String, Long> carrierMinFlightTime = new HashMap<>();
             int sumPrices = 0;
 
             while (reader.hasNext()) {
@@ -44,7 +32,7 @@ public class Main {
                         sumPrices += ticket.getPrice();
 
                         if (!carrierMinFlightTime.containsKey(ticket.getCarrier()) ||
-                            getTimeDifference(carrierMinFlightTime.get(ticket.getCarrier()), ticket.getFlightTime()) < 0) {
+                            carrierMinFlightTime.get(ticket.getCarrier()) - ticket.getFlightTime() > 0) {
                             carrierMinFlightTime.put(ticket.getCarrier(), ticket.getFlightTime());
                         }
                     }
@@ -57,11 +45,17 @@ public class Main {
 
             Collections.sort(prices);
 
-            for (HashMap.Entry<String, String> entry : carrierMinFlightTime.entrySet()) {
-                System.out.println(entry.getKey() + entry.getValue());
+            for (HashMap.Entry<String, Long> entry : carrierMinFlightTime.entrySet()) {
+                long differenceInTime = entry.getValue();
+                long differenceInHours = differenceInTime / (1000 * 60 * 60);
+                long differenceInMinutes = (differenceInTime / (1000 * 60)) % 60;
+
+                String formattedHours = String.format("%02d", differenceInHours);
+                String formattedMinutes = String.format("%02d", differenceInMinutes);
+                System.out.println("Carrier - " + entry.getKey() +  " | Minimum flight time - " + formattedHours + ":" + formattedMinutes);
             }
-            System.out.println(prices.get(prices.size() / 2) - sumPrices / prices.size() );
-        } catch (IOException e) {
+            System.out.println("Difference between median and average price: " + (prices.get(prices.size() / 2) - sumPrices / prices.size()));
+        } catch (IOException | ParseException e) {
             System.err.println(e.getMessage());
         }
     }

@@ -129,27 +129,13 @@ public class Ticket {
         this.price = price;
     }
 
-    public String getFlightTime() {
+    public long getFlightTime() throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yy HH:mm");
         String departureDateTime = departureDate + " " + departureTime;
         String arrivalDateTime = arrivalDate + " " + arrivalTime;
-
-        try {
-            Date departureDateObj = sdf.parse(departureDateTime);
-            Date arrivalDateObj = sdf.parse(arrivalDateTime);
-            long differenceInTime = arrivalDateObj.getTime() - departureDateObj.getTime();
-
-            long differenceInHours = differenceInTime / (1000 * 60 * 60);
-            long differenceInMinutes = (differenceInTime / (1000 * 60)) % 60;
-
-            String formattedHours = String.format("%02d", differenceInHours);
-            String formattedMinutes = String.format("%02d", differenceInMinutes);
-
-            return formattedHours + ":" + formattedMinutes;
-        } catch (ParseException e) {
-            System.err.println(e.getMessage());
-            return "Ошибка вычисления времени полета";
-        }
+        Date departureDateObj = sdf.parse(departureDateTime);
+        Date arrivalDateObj = sdf.parse(arrivalDateTime);
+        return arrivalDateObj.getTime() - departureDateObj.getTime();
     }
 
     @Override
