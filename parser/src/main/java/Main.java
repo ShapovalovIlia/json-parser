@@ -1,12 +1,13 @@
+import entity.Info;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.HashMap;
 
-
 public class Main {
     public static void main(String[] args) {
         final Parser parser = new Parser();
-        String path = args[0];
+        String path = "C:\\Users\\LEXUS_KREKER\\Desktop\\json-parser\\parser\\tickets.json";
 
         try {
             Info info = parser.parse(path);

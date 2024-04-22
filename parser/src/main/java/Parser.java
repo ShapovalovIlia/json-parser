@@ -2,6 +2,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
+import entity.Info;
 import entity.Ticket;
 
 import java.io.FileReader;
