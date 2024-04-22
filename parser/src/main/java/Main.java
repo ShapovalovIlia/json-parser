@@ -6,9 +6,11 @@ import java.util.HashMap;
 public class Main {
     public static void main(String[] args) {
         final Parser parser = new Parser();
-        String path = "C:\\Users\\LEXUS_KREKER\\Desktop\\json-parser\\parser\\tickets.json";
+        String path = args[0];
+
         try {
             Info info = parser.parse(path);
+
             for (HashMap.Entry<String, Long> entry : info.carrierMinFlightTime().entrySet()) {
                 long timeDiff = entry.getValue();
                 long hourDiff = timeDiff / (1000 * 60 * 60);
@@ -21,6 +23,7 @@ public class Main {
                     + formattedHours + ":" + formattedMinutes
                 );
             }
+
             System.out.println(
                 "Difference between median and average price: " + (info.medianAvgPriceDiff())
             );
