@@ -7,7 +7,7 @@ import java.util.HashMap;
 public class Main {
     public static void main(String[] args) {
         final Parser parser = new Parser();
-        String path = "C:\\Users\\LEXUS_KREKER\\Desktop\\json-parser\\parser\\tickets.json";
+        String path = args[0];
 
         try {
             Info info = parser.parse(path);

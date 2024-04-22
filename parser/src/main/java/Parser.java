@@ -31,12 +31,14 @@ public class Parser {
                 while (reader.hasNext()) {
                     JsonElement ticketElement = JsonParser.parseReader(reader);
                     Ticket ticket = gson.fromJson(ticketElement, Ticket.class);
-                    prices.add(ticket.price);
-                    sumPrices += ticket.price;
+                    if (ticket.originName.equals("Владивосток")  && ticket.destinationName.equals("Тель-Авив")) {
+                        prices.add(ticket.price);
+                        sumPrices += ticket.price;
 
-                    if (!carrierMinFlightTime.containsKey(ticket.carrier)
-                            || carrierMinFlightTime.get(ticket.carrier) - ticket.getFlightTime() > 0) {
-                        carrierMinFlightTime.put(ticket.carrier, ticket.getFlightTime());
+                        if (!carrierMinFlightTime.containsKey(ticket.carrier)
+                                || carrierMinFlightTime.get(ticket.carrier) - ticket.getFlightTime() > 0) {
+                            carrierMinFlightTime.put(ticket.carrier, ticket.getFlightTime());
+                        }
                     }
                 }
                 reader.endArray();
