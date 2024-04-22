@@ -147,7 +147,7 @@ public class Ticket {
 
             return formattedHours + ":" + formattedMinutes;
         } catch (ParseException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
             return "Ошибка вычисления времени полета";
         }
     }
