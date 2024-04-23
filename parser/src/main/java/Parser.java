@@ -50,6 +50,6 @@ public class Parser {
         reader.close();
 
         Collections.sort(prices);
-        return new Info(carrierMinFlightTime, prices.get(prices.size() / 2) - sumPrices / prices.size());
+        return new Info(carrierMinFlightTime, prices);
     }
 }
