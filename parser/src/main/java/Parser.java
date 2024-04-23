@@ -20,7 +20,6 @@ public class Parser {
         reader.beginObject();
         ArrayList<Integer> prices = new ArrayList<>();
         HashMap<String, Long> carrierMinFlightTime = new HashMap<>();
-        int sumPrices = 0;
 
         while (reader.hasNext()) {
             String name = reader.nextName();
@@ -33,7 +32,6 @@ public class Parser {
                     Ticket ticket = gson.fromJson(ticketElement, Ticket.class);
                     if (ticket.originName.equals("Владивосток")  && ticket.destinationName.equals("Тель-Авив")) {
                         prices.add(ticket.price);
-                        sumPrices += ticket.price;
 
                         if (!carrierMinFlightTime.containsKey(ticket.carrier)
                                 || carrierMinFlightTime.get(ticket.carrier) - ticket.getFlightTime() > 0) {
